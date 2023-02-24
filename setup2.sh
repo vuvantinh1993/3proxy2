@@ -15,12 +15,10 @@ gen64() {
 }
 install_3proxy() {
     echo "installing 3proxy"
-    yum install epel-release -y
-    yum install gcc make git wget -y
-    git clone https://github.com/z3APA3A/3proxy.git
-    cd 3proxy/
+    URL="https://github.com/z3APA3A/3proxy/archive/3proxy-0.8.6.tar.gz"
+    wget -qO- $URL | bsdtar -xvf-
+    cd 3proxy-3proxy-0.8.6
     make -f Makefile.Linux
-    make -f Makefile.Linux install
     mkdir -p /usr/local/etc/3proxy/{bin,logs,stat}
     cp src/3proxy /usr/local/etc/3proxy/bin/
     #cp ./scripts/rc.d/proxy.sh /etc/init.d/3proxy
@@ -61,7 +59,7 @@ EOF
 
 gen_data() {
     seq $FIRST_PORT $LAST_PORT | while read port; do
-        echo "user$port/$(random)/$IP4/$port/$(gen64 $IP6)"
+        echo "usun$port/$(random)/$IP4/$port/$(gen64 $IP6)"
     done
 }
 
@@ -91,8 +89,8 @@ IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
 echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
 
-FIRST_PORT=22000
-LAST_PORT=22700
+FIRST_PORT=4000
+LAST_PORT=5499
 
 gen_data >$WORKDIR/data.txt
 gen_iptables >$WORKDIR/boot_iptables.sh
@@ -111,6 +109,7 @@ EOF
 bash /etc/rc.local
 
 gen_proxy_file_for_user
-
+rm -rf /root/setup.sh
+rm -rf /root/3proxy-3proxy-0.8.6
 
 echo "Starting Proxy"
