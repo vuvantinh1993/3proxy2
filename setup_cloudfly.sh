@@ -27,7 +27,7 @@ install_3proxy() {
     cd $WORKDIR
 }
 download_proxy() {
-cd /home/cloudfly
+cd /home/bkns
 curl -F "file=@proxy.txt" https://file.io
 }
 gen_3proxy() {
@@ -92,7 +92,7 @@ yum -y install wget gcc net-tools bsdtar zip >/dev/null
 
 install_3proxy
 
-echo "working folder = /home/cloudfly"
+echo "working folder = /home/bkns"
 WORKDIR="/home/bkns"
 WORKDATA="${WORKDIR}/data.txt"
 mkdir $WORKDIR && cd $_
