@@ -87,6 +87,10 @@ cat << EOF > /etc/rc.d/rc.local
 touch /var/lock/subsys/local
 EOF
 
+echo "installing killall htop"
+yum install psmisc
+sudo yum install htop
+
 echo "installing apps"
 yum -y install wget gcc net-tools bsdtar zip >/dev/null
 
@@ -102,16 +106,7 @@ IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
 echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
 
-while :; do
-  read -p "Enter FIRST_PORT between 21000 and 61000: " FIRST_PORT
-  [[ $FIRST_PORT =~ ^[0-9]+$ ]] || { echo "Enter a valid number"; continue; }
-  if ((FIRST_PORT >= 21000 && FIRST_PORT <= 61000)); then
-    echo "OK! Valid number"
-    break
-  else
-    echo "Number out of range, try again"
-  fi
-done
+FIRST_PORT = 30000
 LAST_PORT=$(($FIRST_PORT + 750))
 echo "LAST_PORT is $LAST_PORT. Continue..."
 
